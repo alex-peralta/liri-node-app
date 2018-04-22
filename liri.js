@@ -1,4 +1,4 @@
-// use .env to hide keys
+// Use .env to hide keys
 require('dotenv').config();
 
 // Importing the API keys files from keys.js file
@@ -13,10 +13,11 @@ const client = new Twitter(keys.twitter);
 const spotify = new Spotify(keys.spotify);
 
 // Storing of the command line options
-
 const appType = process.argv[2];
 const appOption = process.argv[3];
 
+// Used to handle parameter options and prompt User of possible error
+// if no parameters are passed.
 switch (appType) {
     case "my-tweets":
         myTweets();
@@ -41,4 +42,17 @@ switch (appType) {
         '3.) node liri.js movie-this' + '\n' +
         '4.) node liri.js do-what-it-says' + '\n');
 
+}
+
+function myTweets() {
+    const params = {screen_name: 'vendutero'};
+    client.get('statuses/user_timeline', params, function (error, tweets, response) {
+        if (!error) {
+            for (let i = 0; i < tweets.length; i++) {
+                console.log(tweets[i].text);
+            }
+        } else {
+            console.log("error: " + error);
+        }
+    });
 }
